@@ -87,7 +87,7 @@ Stems a Portuguese word by removing its suffixes according to the RSLP algorithm
 
 ```json
 {
-  "word": "string"
+  "text": "string"
 }
 ```
 
@@ -95,7 +95,7 @@ Stems a Portuguese word by removing its suffixes according to the RSLP algorithm
 
 | Name | Type   | Required | Description                     |
 |------|--------|----------|---------------------------------|
-| word | string | Yes      | The word to be stemmed          |
+| text | string | Yes      | The word to be stemmed          |
 
 **Response:**
 
@@ -114,7 +114,7 @@ Request:
 ```sh
 curl -X POST http://localhost/api/stem \
   -H "Content-Type: application/json" \
-  -d '{"word": "caminhando"}'
+  -d '{"text": "caminhando"}'
 ```
 
 Response:
@@ -131,7 +131,7 @@ Request:
 ```sh
 curl -X POST http://localhost/api/stem \
   -H "Content-Type: application/json" \
-  -d '{"word": "brasileiros aprendendo português"}'
+  -d '{"text": "brasileiros aprendendo português"}'
 ```
 
 Response:
