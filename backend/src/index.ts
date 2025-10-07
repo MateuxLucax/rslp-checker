@@ -54,7 +54,7 @@ async function startServer() {
         })
       }
     )
-    
+    .get('/health', () => ({ status: 'ok' }))
     .listen(3000, () => {
       console.log('🚀 RSLP Stemmer API running at http://localhost:3000');
     });
