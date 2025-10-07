@@ -31,7 +31,7 @@ services:
           memory: 128M
 
   rslp-proxy:
-    image: haproxy:2.9-alpine
+    image: haproxy:lts-alpine
     container_name: rslp-proxy
     restart: unless-stopped
     ports:
