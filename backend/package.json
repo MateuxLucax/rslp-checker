@@ -1,6 +1,6 @@
 {
   "name": "rslp-companies-check",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A project that implements the RSLP stemming algorithm for Portuguese words.",
   "main": "src/index.ts",
   "scripts": {
@@ -9,7 +9,7 @@
     "test": "bun test"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "^1.2.23"
   },
   "keywords": [
     "rslp",
@@ -20,6 +20,6 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "elysia": "^1.3.3"
+    "elysia": "^1.4.9"
   }
 }

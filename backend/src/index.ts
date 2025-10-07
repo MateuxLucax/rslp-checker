@@ -7,7 +7,7 @@ let stemmer: RSLPStemmer;
 
 async function initializeStemmer() {
   try {
-    const rslpFilePath = join(import.meta.dir, 'assets', 'portuguese.rslp');
+    const rslpFilePath = join(process.cwd(), 'assets', 'portuguese.rslp');
     const steps = await parseRSLPRules(rslpFilePath);
     stemmer = new RSLPStemmer(steps);
     console.log('RSLP Stemmer initialized successfully');

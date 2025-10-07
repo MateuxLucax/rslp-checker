@@ -1,16 +1,35 @@
-FROM oven/bun
+FROM oven/bun:1.2.13-slim AS base
+WORKDIR /usr/src/app
 
-WORKDIR /app
+FROM base AS install
+RUN mkdir -p /temp/dev
+COPY package.json bun.lock /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
 
-COPY package.json .
-COPY bun.lock .
+RUN mkdir -p /temp/prod
+COPY package.json bun.lock /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile --production
 
-RUN bun install --production
+FROM base AS prerelease
+COPY --from=install /temp/dev/node_modules node_modules
+COPY . .
 
-COPY src src
-COPY tsconfig.json .
+ARG TARGET
+ENV NODE_ENV=production
+RUN bun build \
+  --compile \
+  --minify \
+  --target bun \
+  --outfile server \
+  ./
 
-ENV NODE_ENV production
-CMD ["bun", "src/index.ts"]
+FROM base AS release
 
-EXPOSE 3000
+WORKDIR /usr/src/app
+
+COPY --from=prerelease /usr/src/app/server ./server
+COPY --from=prerelease /usr/src/app/src/assets ./assets
+
+RUN chmod +x ./server
+
+ENTRYPOINT [ "./server" ]
