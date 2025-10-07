@@ -1,8 +1,6 @@
 services:
   rslp-frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: ghcr.io/mateuxlucax/rslp-checker-frontend:latest
     container_name: rslp-frontend
     restart: unless-stopped
     healthcheck:
@@ -18,9 +16,7 @@ services:
           memory: 64M
 
   rslp-backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ghcr.io/mateuxlucax/rslp-checker-backend:latest
     container_name: rslp-backend
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]

@@ -1,5 +1,6 @@
 {
 	"name": "frontend",
+	"description": "Frontend for RSLP Check",
 	"private": true,
 	"version": "1.0.0",
 	"type": "module",
