@@ -1,7 +1,6 @@
 # RSLP Checker
 
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
 ![Svelte](https://img.shields.io/badge/svelte-%23f1413d.svg?style=for-the-badge&logo=svelte&logoColor=white)
 ![Bun](https://img.shields.io/badge/Bun-%23000000.svg?style=for-the-badge&logo=bun&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
@@ -12,13 +11,13 @@ This application provides a user interface and API for the RSLP (Portuguese Lang
 
 ```mermaid
 flowchart LR
-    Client([User]) -->|HTTP Request| Nginx(Nginx Proxy)
-    Nginx -->|/ requests| Frontend[SvelteKit Frontend]
-    Nginx -->|/api requests| Backend[RSLP Stemmer API]
-    Frontend -->|POST /api/stem| Nginx
+    Client([User]) -->|HTTP Request| HaProxy(HaProxy Proxy)
+    HaProxy -->|/ requests| Frontend[SvelteKit Frontend]
+    HaProxy -->|/api requests| Backend[RSLP Stemmer API]
+    Frontend -->|POST /api/stem| HaProxy
     Backend -->|Stemming Process| RSLPRules[(RSLP Rules)]
     subgraph Docker Compose
-        Nginx
+        HaProxy
         Frontend
         Backend
         RSLPRules
@@ -60,8 +59,9 @@ flowchart LR
 The application was built with Docker in mind. To run the application, you need to have Docker installed on your machine. After installing Docker, you can follow these steps:
 
 ```sh
-docker compose up -d
+docker compose -f local.docker-compose.yml up
 ```
+> This will build and start the application using the provided Docker Compose configuration for local development. If you want a remote-ready setup, use `remote.docker-compose.yml` instead.
 
 This will start the application in the background. After that, you can access the application through your browser at http://localhost.
 

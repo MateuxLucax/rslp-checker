@@ -1,0 +1,48 @@
+services:
+  rslp-frontend:
+    build: ./frontend
+    container_name: rslp-frontend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64M
+
+  rslp-backend:
+    build: ./backend
+    container_name: rslp-backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 128M
+
+  rslp-proxy:
+    image: haproxy:lts-alpine
+    container_name: rslp-proxy
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - rslp-frontend
+      - rslp-backend
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64M
