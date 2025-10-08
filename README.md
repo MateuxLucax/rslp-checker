@@ -11,8 +11,8 @@ This application provides a user interface and API for the RSLP (Portuguese Lang
 
 ```mermaid
 flowchart LR
-    Client([User]) -->|HTTP Request| HaProxy(HaProxy Proxy)
-    HaProxy -->|/ requests| Frontend[SvelteKit Frontend]
+    Client([User]) -->|HTTP Request| HaProxy(HaProxy)
+    HaProxy -->| /requests| Frontend[SvelteKit Frontend]
     HaProxy -->|/api requests| Backend[RSLP Stemmer API]
     Frontend -->|POST /api/stem| HaProxy
     Backend -->|Stemming Process| RSLPRules[(RSLP Rules)]
