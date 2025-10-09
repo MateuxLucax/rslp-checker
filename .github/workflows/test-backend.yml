@@ -31,7 +31,7 @@ jobs:
       - name: Run tests
         run: |
           cd backend
-          bun test
+          bun test ./tests/*.ts
 
   integration-tests:
     runs-on: ubuntu-latest
