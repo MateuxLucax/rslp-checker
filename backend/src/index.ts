@@ -18,48 +18,42 @@ async function initializeStemmer() {
   }
 }
 
-async function startServer() {
-  const initialized = await initializeStemmer();
+const initialized = await initializeStemmer();
 
-  if (!initialized) {
-    console.error('Server cannot start without stemmer initialization');
-    process.exit(1);
-  }
-
-  const app = new Elysia()
-    .get('/', () => 'RSLP Stemmer API - POST to /stem with text to stem words')    
-    .post('/stem', 
-      ({ body }) => {
-        const { text } = body;
-        
-        if (!text) {
-          return { error: 'Text is required' };
-        }
-        
-        if (typeof text !== 'string') {
-          return { error: 'Text must be a string' };
-        }
-
-        const words = text.split(' ');
-        const stemmedWords = words.map(word => stemmer.stem(word));
-
-        return {
-            original: text,
-            stemmed: stemmedWords.join(' '),
-          };
-      },
-      {
-        body: t.Object({
-          text: t.String()
-        })
-      }
-    )
-    .get('/health', () => ({ status: 'ok' }))
-    .listen(3000, () => {
-      console.log('🚀 RSLP Stemmer API running at http://localhost:3000');
-    });
-    
-  return app;
+if (!initialized) {
+  console.error('Server cannot start without stemmer initialization');
+  process.exit(1);
 }
 
-startServer();
+new Elysia()
+  .get('/', () => 'RSLP Stemmer API - POST to /stem with text to stem words')    
+  .post('/stem', 
+    ({ body }) => {
+      const { text } = body;
+      
+      if (!text) {
+        return { error: 'Text is required' };
+      }
+      
+      if (typeof text !== 'string') {
+        return { error: 'Text must be a string' };
+      }
+
+      const words = text.split(' ');
+      const stemmedWords = words.map(word => stemmer.stem(word));
+
+      return {
+          original: text,
+          stemmed: stemmedWords.join(' '),
+        };
+    },
+    {
+      body: t.Object({
+        text: t.String()
+      })
+    }
+  )
+  .get('/health', () => ({ status: 'ok' }))
+  .listen(3000, () => {
+    console.log('🚀 RSLP Stemmer API running at http://localhost:3000');
+  });

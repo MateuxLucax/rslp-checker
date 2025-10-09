@@ -28,7 +28,7 @@ FROM base AS release
 WORKDIR /usr/src/app
 
 COPY --from=prerelease /usr/src/app/server ./server
-COPY --from=prerelease /usr/src/app/src/assets ./assets
+COPY ./assets ./assets
 
 RUN chmod +x ./server
 
