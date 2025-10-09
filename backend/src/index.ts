@@ -2,6 +2,8 @@ import { Elysia, t } from 'elysia';
 import { parseRSLPRules } from './parser';
 import RSLPStemmer from './stemmer';
 import { join } from 'path';
+import { logger } from '@grotto/logysia';
+
 
 let stemmer: RSLPStemmer;
 
@@ -26,6 +28,9 @@ if (!initialized) {
 }
 
 new Elysia()
+  .use(
+    logger({ logIP: true })
+  )
   .get('/', () => 'RSLP Stemmer API - POST to /stem with text to stem words')    
   .post('/stem', 
     ({ body }) => {
