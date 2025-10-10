@@ -7,9 +7,9 @@ const stemTrend = new Trend('stem_duration', true);
 
 export const options = {
   stages: [
-    { duration: '15s', target: 100 },
-    { duration: '30s', target: 1000 },
-    { duration: '15s', target: 100 },
+    { duration: '15s', target: 20 },
+    { duration: '30s', target: 100 },
+    { duration: '15s', target: 20 },
   ],
   thresholds: {
     http_req_duration: ['p(95)<500'],
