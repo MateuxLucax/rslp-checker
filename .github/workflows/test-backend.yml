@@ -42,16 +42,31 @@ jobs:
         run: docker compose -f local.docker-compose.yml up -d --build
 
       - name: Wait for services to be ready
-        run: curl --retry 10 --retry-delay 5 --retry-connrefused http://localhost
+        run: |
+          echo "Waiting for services to start..."
+          sleep 15
+          
+          echo "Checking if HAProxy is responding..."
+          curl --retry 20 --retry-delay 3 --retry-connrefused --fail http://localhost:3000
+          
+          echo "Testing API health endpoint..."
+          curl --retry 15 --retry-delay 3 --retry-connrefused --fail http://localhost:3000/api/health
+          
+          echo "Services are ready!"
 
       - uses: grafana/setup-k6-action@v1
       - uses: grafana/run-k6-action@v1
         env:
-          BASE_URL: http://localhost/api
+          BASE_URL: http://localhost:3000/api
         with:
           path: |
             ./backend/tests/performance/*.js
 
       - name: Clean up
         if: always()
-        run: docker-compose down
+        run: |
+          if [ "${{ job.status }}" = "failure" ]; then
+            echo "=== Service logs ==="
+            docker compose -f local.docker-compose.yml logs
+          fi
+          docker compose -f local.docker-compose.yml down
